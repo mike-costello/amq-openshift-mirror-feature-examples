@@ -2,9 +2,6 @@ apiVersion: broker.amq.io/v1beta1
 kind: ActiveMQArtemis
 metadata:
   name: broker-az-1
-  monitor: true
- # cluster: primary-broker-cluster
- # monitor: amq
   namespace: az1-brokers
 spec:
   deploymentPlan:

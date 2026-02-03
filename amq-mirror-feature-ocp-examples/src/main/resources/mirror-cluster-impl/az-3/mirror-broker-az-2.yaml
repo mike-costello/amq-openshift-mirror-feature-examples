@@ -2,9 +2,7 @@ apiVersion: broker.amq.io/v1beta1
 kind: ActiveMQArtemis
 metadata:
   name: mirror-broker-az-2
-  monitor: true
- # cluster: backup-broker-1-cluster
- # namespace: az1-brokers
+  namespace: az3-brokers
 spec:
   deploymentPlan:
     size: 1
