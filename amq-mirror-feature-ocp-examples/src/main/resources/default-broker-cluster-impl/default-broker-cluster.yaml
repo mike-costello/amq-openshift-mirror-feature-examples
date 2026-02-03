@@ -1,0 +1,23 @@
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemis
+metadata:
+  name: default-broker-cluster
+  labels:
+    amq-broker-cluster-name: default-broker-cluster
+  namespace: amq-brokers
+spec:
+  deploymentPlan:
+    image: placeholder
+    jolokiaAgentEnabled: false
+    journalType: nio
+    managementRBACEnabled: true
+    messageMigration: true
+    persistenceEnabled: true
+    requireLogin: false
+    clustered: true
+    emableMetricsPlugin: true
+    size: 3
+    replicaMirror:
+      enabled: true
+      sync: true
+  version: 7.13.2

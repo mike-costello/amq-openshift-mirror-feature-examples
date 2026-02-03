@@ -1,0 +1,33 @@
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemis
+metadata:
+  name: mirror-broker-az-2
+  monitor: true
+ # cluster: backup-broker-1-cluster
+ # namespace: az1-brokers
+spec:
+  deploymentPlan:
+    size: 1
+    enableMetricsPlugin: true
+    clustered: false
+    jolokiaAgentEnabled: true
+    managementRBACEnabled: false
+  version: 7.13.1
+  brokerProperties:
+   - "AMQPConnections.target.uri=tcp://broker-az-2-ss-0.broker-az-2-hdls-svc.az2-brokers.svc.cluster.local:61617?clientFailureCheckPeriod=2000&connectionTTL=5000"
+   #- "AMQPConnections.target.uri=tcp://primarybroker-hdls-svc.amq-brokers.svc.cluster.local:61617?clientFailureCheckPeriod=2000&connectionTTL=5000"
+   - "AMQPConnections.target.retryInterval=5000"
+   - "AMQPConnections.target.reconnect-attempts=-1"
+   - "AMQPConnections.target.user=admin"
+   - "AMQPConnections.target.password=password"
+   - "AMQPConnections.target.autoStart=true"
+   - "AMQPConnections.target.connectionElements.mirror.type=MIRROR"
+   - "AMQPConnections.target.connectionElements.mirror.messageAcknowledgements=true"
+   - "AMQPConnections.target.connectionElements.mirror.queueCreation=true"
+   - "AMQPConnections.target.connectionElements.mirror.queueRemoval=true"
+  console:
+    expose: true
+  acceptors:
+    - name: "artemis"
+      port: 61617
+      protocols: core,amqp

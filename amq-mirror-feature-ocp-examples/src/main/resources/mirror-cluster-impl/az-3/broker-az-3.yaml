@@ -1,0 +1,69 @@
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemis
+metadata:
+  name: broker-az-3
+  monitor: true
+ #cluster: primary-broker-cluster
+ # monitor: amq
+  namespace: az3-brokers
+spec:
+  deploymentPlan:
+    size: 1
+    enableMetricsPlugin: true
+    clustered: false
+    jolokiaAgentEnabled: true
+    managementRBACEnabled: false
+  version: 7.13.3
+  brokerProperties:
+   #Mirror Configuration 
+   - "AMQPConnections.target.uri=tcp://mirror-broker-az-3-ss-0.mirror-broker-az-3-hdls-svc.az1-brokers.svc.cluster.local:61617?clientFailureCheckPeriod=2000&connectionTTL=5000"
+   - "AMQPConnections.target.retryInterval=5000"
+   - "AMQPConnections.target.reconnectAttempts=-1"
+   - "AMQPConnections.target.user=admin"
+   - "AMQPConnections.target.password=password"
+   - "AMQPConnections.target.autostart=true"
+   - "AMQPConnections.target.connectionElements.mirror.type=MIRROR"
+   - "AMQPConnections.target.connectionElements.mirror.messageAcknowledgements=true"
+   - "AMQPConnections.target.connectionElements.mirror.queueCreation=true"
+   - "AMQPConnections.target.connectionElements.mirror.queueRemoval=true"
+   #Federation Configuration 
+   ## Peer Federation Broker AZ1 
+   - "AMQPConnections.fed-up-az1.uri=tcp://broker-az-1-ss-0.broker-az-1-hdls-svc.az1-brokers.svc.cluster.local:61617"
+   - "AMQPConnections.fed-up-az1.autostart=true"
+   - "AMQPConnections.fed-up-az1.federations.fed-up-az1.type=FEDERATION"
+   - "AMQPConnections.fed-up-az1.federations.fed-up-az1.localQueuePolicies.example-local-queue-policy.includeFederated=false"
+   - "AMQPConnections.fed-up-az1.federations.fed-up-az1.localQueuePolicies.example-local-queue-policy.includes.##.addressMatch=#"
+   - "AMQPConnections.fed-up-az1.federations.fed-up-az1.localQueuePolicies.example-local-queue-policy.includes.##.name=##"
+   - "AMQPConnections.fed-up-az1.federations.fed-up-az1.localQueuePolicies.example-local-queue-policy.includes.##.queueMatch=#"
+   - "AMQPConnections.fed-up-az1.federations.fed-up-az1.localQueuePolicies.example-local-queue-policy.name=example-local-queue-policy"
+   - "AMQPConnections.fed-up-az1.federations.fed-up-az1.name=fed-up-az1"
+   - "AMQPConnections.fed-up-az1.name=fed-up-az1"
+   - "AMQPConnections.fed-up-az1.reconnectAttempts=-1"
+   - "AMQPConnections.fed-up-az1.retryInterval=5000"
+   - "AMQPConnections.fed-up-az1.transportConfigurations.fed-up-az1.factoryClassName=org.apache.activemq.artemis.core.remoting.impl.netty.NettyConnectorFactory"
+   - "AMQPConnections.fed-up-az1.transportConfigurations.fed-up-az1.name=fed-up"
+   - "AMQPConnections.fed-up-az1.transportConfigurations.fed-up-az1.params.port=61617"
+   - "AMQPConnections.fed-up-az1.transportConfigurations.fed-up-az1.params.host=broker-az-1.broker-az-1-hdls-svc.az1-brokers.svc.cluster.local"
+   ## Peer Federation Broker AZ2
+   - "AMQPConnections.fed-up-az3.uri=tcp://broker-az-2-ss-0.broker-az-2-hdls-svc.az2-brokers.svc.cluster.local:61617"
+   - "AMQPConnections.fed-up-az3.autostart=true"
+   - "AMQPConnections.fed-up-az3.federations.fed-up-az3.type=FEDERATION"
+   - "AMQPConnections.fed-up-az3.federations.fed-up-az3.localQueuePolicies.example-local-queue-policy.includeFederated=false"
+   - "AMQPConnections.fed-up-az3.federations.fed-up-az3.localQueuePolicies.example-local-queue-policy.includes.##.addressMatch=#"
+   - "AMQPConnections.fed-up-az3.federations.fed-up-az3.localQueuePolicies.example-local-queue-policy.includes.##.name=##"
+   - "AMQPConnections.fed-up-az3.federations.fed-up-az3.localQueuePolicies.example-local-queue-policy.includes.##.queueMatch=#"
+   - "AMQPConnections.fed-up-az3.federations.fed-up-az3.localQueuePolicies.example-local-queue-policy.name=example-local-queue-policy"
+   - "AMQPConnections.fed-up-az3.federations.fed-up-az3.name=fed-up"
+   - "AMQPConnections.fed-up-az3.name=fed-up-az3"
+   - "AMQPConnections.fed-up-az3.reconnectAttempts=-1"
+   - "AMQPConnections.fed-up-az3.retryInterval=5000"
+   - "AMQPConnections.fed-up-az3.transportConfigurations.fed-up.factoryClassName=org.apache.activemq.artemis.core.remoting.impl.netty.NettyConnectorFactory"
+   - "AMQPConnections.fed-up-az3.transportConfigurations.fed-up.name=fed-up"
+   - "AMQPConnections.fed-up-az3.transportConfigurations.fed-up.params.port=61617"
+   - "AMQPConnections.fed-up-az3.transportConfigurations.fed-up.params.host=broker-az-2-ss-0.broker-az-2-hdls-svc.az2-brokers.svc.cluster.local"
+  console:
+    expose: true
+  acceptors:
+    - name: "artemis"
+      port: 61617
+      protocols: core,amqp

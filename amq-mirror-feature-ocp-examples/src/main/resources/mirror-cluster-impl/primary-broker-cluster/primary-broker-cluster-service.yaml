@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: backup-broker-cluster-service
+  namespace: backup-brokers
+  labels:
+    ActiveMQArtemis: broker
+    application: broker-app
+spec:
+  ports:
+    - name: artemis-0
+      protocol: TCP
+      port: 61616
+      targetPort: 61616
+  selector:
+    cluster: backup-broker-cluster
+status:
+  loadBalancer: {}

@@ -1,0 +1,24 @@
+apiVersion: monitoring.rhobs/v1alpha1
+kind: MonitoringStack
+metadata:
+    labels:
+      monitor: amq
+    name: amq-monitoring-stack
+    namespace: amq-monitoring
+spec:
+  alertmanagerConfig:
+      disabled: false
+  logLevel: debug
+  prometheusConfig:
+      replicas: 2
+  resourceSelector:
+      matchLabels:
+       monitor: "true"
+  resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+  retention: 1d

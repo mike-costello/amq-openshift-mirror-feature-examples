@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: testproject
+  namespace: amq-gitops
+spec:
+  destination:
+    namespace: test-project
+    server: https://kubernetes.default.svc
+  source:
+    path: bgd/base
+    repoURL: https://github.com/gitops-examples/getting-started
+    targetRevision: HEAD
+  sources: []
+  project: testproject
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true

@@ -1,0 +1,9 @@
+kind: ThanosQuerier
+apiVersion: monitoring.rhobs/v1alpha1
+metadata:
+ name: amq-metrics-querier
+ monitor: amq
+spec:
+ selector:
+   matchLabels:
+     monitor: amq

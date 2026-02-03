@@ -1,0 +1,35 @@
+apiVersion: broker.amq.io/v1beta1
+kind: ActiveMQArtemis
+metadata:
+  name: primary-broker-3
+  monitor: true
+  cluster: primary-broker-cluster
+ # monitor: amq
+  #namespace: activemq-artemis-operator
+spec:
+  deploymentPlan:
+    size: 1
+    enableMetricsPlugin: true
+    #image: quay.io/ataylor/activemq-artemis-broker-kubernetes:latest
+    #initImage: quay.io/ataylor/artemis-init-container:latest
+    clustered: true
+    jolokiaAgentEnabled: true
+    managementRBACEnabled: false
+  version: 7.13.1
+  brokerProperties:
+   - "AMQPConnections.target.uri=tcp://backup-broker-3-ss-0.backup-brokers-hdls-svc.backup-brokers.svc.cluster.local:61617?clientFailureCheckPeriod=2000&connectionTTL=5000"
+   - "AMQPConnections.target.retryInterval=5000"
+   - "AMQPConnections.target.reconnect-attempts=-1"
+   - "AMQPConnections.target.user=admin"
+   - "AMQPConnections.target.password=password"
+   - "AMQPConnections.target.autoStart=true"
+   - "AMQPConnections.target.connectionElements.mirror.type=MIRROR"
+   - "AMQPConnections.target.connectionElements.mirror.messageAcknowledgements=true"
+   - "AMQPConnections.target.connectionElements.mirror.queueCreation=true"
+   - "AMQPConnections.target.connectionElements.mirror.queueRemoval=true"
+  console:
+    expose: true
+  acceptors:
+    - name: "artemis"
+      port: 61617
+      protocols: core,amqp

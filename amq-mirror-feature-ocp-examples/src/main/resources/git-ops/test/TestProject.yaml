@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: testproject
+  namespace: amq-gitops
+spec:
+  clusterResourceBlacklist: 
+  - group: '*'
+    kind: '*'
+  description: Test Project 
+  destinations: 
+  - namespace: test-project
+    server: https://kubernetes.default.svc
+  namespaceResourceBlacklist: 
+  - group: ""
+    kind: ResourceQuota
+  - group: ""
+    kind: LimitRange
+  - group: operators.coreos.com
+    kind: '*'
+  - group: operator.openshift.io
+    kind: '*'
+  - group: storage.k8s.io
+    kind: '*'
+  roles: 
+  - description: Team3 Admins
+    groups:
+    - system:authenticated
+    name: admin
+    policies:
+    - p, proj:testproject:admin, applications, *, testproject/*, allow
+    - p, proj:testproject:admin, exec, create, testproject/*, allow
+    - p, proj:testproject:admin, applcations, *, */*, allow
+    - p, proj:testproject:admin, exec,create, */*, allow
+  sourceRepos: 
+  - https://github.com/OpenShiftDemos/advanced-gitops-workshop
+  - https://github.com/gitops-examples/getting-started

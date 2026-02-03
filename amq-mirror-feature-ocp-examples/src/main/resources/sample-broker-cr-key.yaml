@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sample-broker-cr-repo
+  namespace: amq-gitops
+  labels:
+    argocd.argoproj.io/secret-type: repo-creds
+stringData:
+  type: git
+  url: git@github.com:mike-costello
+  sshPrivateKey: | 
+     -----BEGIN OPENSSH PRIVATE KEY-----
+     b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+     QyNTUxOQAAACDGCW3RRaMcpZrDyX7Xz3r2P62nBGof6kTjcKlykZds4wAAAKAnMDCgJzAw
+     oAAAAAtzc2gtZWQyNTUxOQAAACDGCW3RRaMcpZrDyX7Xz3r2P62nBGof6kTjcKlykZds4w
+     AAAEAdwCKsNhZkWC9KBwdoIGGMca8cH45Fvdv3C9rQ/a/elsYJbdFFoxylmsPJftfPevY/
+     racEah/qRONwqXKRl2zjAAAAF21pa2UuY29zdGVsbG9AZ21haWwuY29tAQIDBAUG
+     -----END OPENSSH PRIVATE KEY-----
