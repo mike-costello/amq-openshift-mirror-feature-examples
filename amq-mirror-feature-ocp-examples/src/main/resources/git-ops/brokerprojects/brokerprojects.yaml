@@ -1,0 +1,42 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: brokerprojects
+  namespace: amq-gitops
+spec:
+  clusterResourceBlacklist: 
+  - group: '*'
+    kind: '*'
+  description: Broker Projects 
+  destinations: 
+  - namespace: az1-brokers
+    server: https://kubernetes.default.svc
+  - namespace: az2-brokers
+    server: https://kubernetes.default.svc
+  - namespace: az3-brokers
+    server: https://kubernetes.default.svc
+
+  namespaceResourceBlacklist: 
+  - group: ""
+    kind: ResourceQuota
+  - group: ""
+    kind: LimitRange
+  - group: operators.coreos.com
+    kind: '*'
+  - group: operator.openshift.io
+    kind: '*'
+  - group: storage.k8s.io
+    kind: '*'
+  roles: 
+  - description: Admins
+    groups:
+    - system:authenticated
+    name: admin
+    policies:
+    - p, proj:brokerprojects:admin, applications, *, brokerprojects/*, allow
+    - p, proj:brokerprojects:admin, exec, create, brokerprojects/*, allow
+    - p, proj:brokerprojects:admin, applcations, *, */*, allow
+    - p, proj:brokerprojects:admin, exec,create, */*, allow
+  sourceRepos: 
+  - https://github.com/mike-costello/amq-openshift-mirror-feature-examples
+  - https://github.com/gitops-examples/getting-started

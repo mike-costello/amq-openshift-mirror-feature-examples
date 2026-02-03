@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: az1-brokers
+  namespace: amq-gitops
+spec:
+  destination:
+    namespace: az1-brokers
+    server: https://kubernetes.default.svc
+  source:
+    path: amq-mirror-feature-ocp-examples/src/main/resources/mirror-cluster-impl/az-1
+    repoURL: https://github.com/mike-costello/amq-openshift-mirror-feature-examples
+    targetRevision: HEAD
+  sources: []
+  project: brokerprojects
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: true

@@ -9,8 +9,6 @@ spec:
   deploymentPlan:
     size: 1
     enableMetricsPlugin: true
-    image: quay.io/ataylor/activemq-artemis-broker-kubernetes:latest
-    initImage: quay.io/ataylor/artemis-init-container:latest
     clustered: false
     jolokiaAgentEnabled: true
     managementRBACEnabled: false
