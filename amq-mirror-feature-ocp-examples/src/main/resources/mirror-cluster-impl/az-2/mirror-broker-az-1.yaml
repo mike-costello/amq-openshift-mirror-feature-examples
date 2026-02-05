@@ -10,7 +10,7 @@ spec:
     clustered: false
     jolokiaAgentEnabled: true
     managementRBACEnabled: false
-  version: 7.13.1
+  version: 7.13.3
   brokerProperties:
    - "AMQPConnections.target.uri=tcp://broker-az-1-ss-0.broker-az-1-hdls-svc.az1-brokers.svc.cluster.local:61617?clientFailureCheckPeriod=2000&connectionTTL=5000"
    #- "AMQPConnections.target.uri=tcp://primarybroker-hdls-svc.amq-brokers.svc.cluster.local:61617?clientFailureCheckPeriod=2000&connectionTTL=5000"
